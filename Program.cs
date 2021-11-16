@@ -8,18 +8,21 @@ namespace godot_net_server
     {
         static void Main(string[] args)
         {
-            MLContext mlContext = new MLContext();
-
-            // Load trained model
-            var modelScorer = new OnnxModelScorer("my_ppo_1_model.onnx", mlContext);
-            var input = new[]
+            GodotServer server = new GodotServer(port: 8001);
+            while (true)
             {
-                3.036393f,11.0f,2.958097f,0.0f,0.0f,0.0f,0.015607f,0.684984f,0.0f,0.0f
-            };
-            var action = modelScorer.Score(input);
-            var action_command = action.ToList().IndexOf(action.ToList().Max());
-            Console.Write(action_command);
+                try
+                {
+                    var start_godot = @"/C cd C:/Users/Shehroze/source/repos/GymGodot/gym-godot && E:/godot/Godot/Godot_v3.4-stable_mono_win64.exe ./examples/mars_lander/Root.tscn --fixed-fps 60 --disable-render-loop --serverIP=127.0.0.1 --serverPort=8001 --renderPath=C:\Users\Shehroze\source\repos\GymGodot/render_frames/";
+                    System.Diagnostics.Process.Start("CMD.exe", start_godot);
+                    server.Start().Wait();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
         }
-        
+
     }
 }
